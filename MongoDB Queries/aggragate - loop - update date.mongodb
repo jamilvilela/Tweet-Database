@@ -1,0 +1,13 @@
+db.Landing_To_Staging_Integration.aggregate([
+    {$match: {}},
+    {$project: {_id: 1, start: 1}}
+   ]).forEach(function(doc) 
+ {
+     db.Landing_To_Staging_Integration.update({"_id" : doc._id},
+        {$set: {"start_2": ISODate(doc.start)}})
+});
+
+db.Landing_To_Staging_Integration.updateMany({}, {$rename: {"start_2": "start"}
+});
+
+db.Landing_To_Staging_Integration.find({"_id" : ObjectId("62d74f265d4df1278c6a564f")})

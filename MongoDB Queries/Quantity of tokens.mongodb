@@ -1,0 +1,15 @@
+db.Tweet.aggregate([
+    {$unwind: "$token_english"},
+    {$group: {_id: {token: "$token_english"}}},
+    {$project: {_id:0, token: "$_id.token"}}
+])
+;
+
+db.Tweet.aggregate([
+    {$match: { "lang" : "pt" }},
+    {$unwind: "$token_text"},
+    {$group: {_id: {token: "$token_text"}, quantity: {$count: {} }}},
+    {$project: {_id:0, token: "$_id.token", quantity:1}},
+    {$sort: {quantity:-1}}
+])
+;

@@ -1,0 +1,25 @@
+var duplicates = [];
+
+db.Tweet.aggregate([
+    {$match: {id: {$ne: ''}}},
+    {$group: 
+        {_id: {_id: "$id", search: "$search_id"}, 
+         dups: {"$addToSet": "$_id"},
+         qty: {$count: {} }}},
+    {$match: {qty: {"$gt": 1}}}
+    ],
+    {allowDiskUse: true}
+)
+.forEach(
+    function(doc) {
+        doc.dups.shift();
+        doc.dups.forEach(
+            function(dupId) {
+                duplicates.push(dupId);
+            }
+        )
+    }
+)
+
+db.Tweet.remove({_id: {$in: duplicates}})               
+

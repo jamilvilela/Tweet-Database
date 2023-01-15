@@ -1,0 +1,42 @@
+
+db.Tweet.aggregate([
+    {$match: {"search_id": "1630777590069x733487842509455400"
+               //     , "id":"1547579640817930242"
+               ,"update_date": {$gte: '2022-09-01'}
+                    }},
+    {$lookup: 
+        { from: "Search",
+          localField: "search_id",
+          foreignField: "_id",
+          as: "lkp_search"
+        }
+    },
+    {$lookup: 
+        { from: "Author",
+          localField: "author_id",
+          foreignField: "_id",
+          as: "lkp_author"
+        }
+    },
+    {$lookup: 
+        { from: "Place",
+          localField: "geo.place_id",
+          foreignField: "_id",
+          as: "lkp_place"
+        }
+    }
+   ,{$project: {
+               id:1, //text:1, lang:1, created_at:1,
+               update_date:1,
+               token_text:1, polarity:1, subjectivity:1,
+               lkp_search:1,  lkp_author:1, lkp_place:1,
+               }
+   }
+  /* ,{$match: {$or: [{'polarity': {$exists: false}} 
+                   ,{'subjectivity': {$exists: true}} 
+                   ]}}*/
+   //,{$unwind: '$token_text'}
+   ,{$unwind: '$lkp_search'}
+   ,{$unwind: {path: '$lkp_author', preserveNullAndEmptyArrays: true}}
+   ,{$unwind: {path: '$lkp_place', preserveNullAndEmptyArrays: true}}
+]);

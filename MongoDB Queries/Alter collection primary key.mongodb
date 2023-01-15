@@ -1,0 +1,20 @@
+// db.Tweet.find({ "id": "1549571529608151040"})
+
+// db.Tweet.find({ "lang" : {$nin: ["pt", "en", "es", "fr", "it", "de"]}})
+
+
+db.Tweet.find({"lang" : {$nin: ["pt", "en", "es", "fr", "it", "de"]}})
+.forEach(
+    function(doc) {
+        var old_id = {};
+        var aux = {};
+        old_id = doc['_id']; 
+        aux = doc;
+        aux['_id'] = {'id': doc['id'], 'search_id': doc['search_id']};
+        db.Tweet.insert(aux);
+        db.Tweet.deleteOne({$and:[ {"_id": old_id}, {"_id": {$ne: aux['_id']}} ] }
+                            //,{$set: {"delete": true }}
+                            );        
+    }
+)
+

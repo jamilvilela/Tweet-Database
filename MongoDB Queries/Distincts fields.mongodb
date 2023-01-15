@@ -1,0 +1,22 @@
+------ Places
+db.Place.distinct('place_type');
+db.Place.distinct('name');
+db.Place.distinct('full_name');
+
+------- Author
+db.Author.distinct('username');
+db.Author.distinct('location');
+
+------ Search
+db.Search.distinct('user_email');
+db.Search.distinct('user_language');
+db.Search.distinct('Created Date');
+db.Search.distinct('inserted_at');
+
+--------- Tweet
+db.Tweet.distinct('lang');
+db.Tweet.distinct('search_id');
+db.Tweet.distinct('inserted_at');
+
+
+

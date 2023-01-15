@@ -1,0 +1,20 @@
+// db.getCollection("Search").updateMany({}, {$set: {"integrated_at": null}});
+
+print("full-> " + db.Tweet.count({"_id": {$ne: null}}));
+
+print("pt  -> " + db.Tweet.count({"lang": "pt"}));
+
+print("en  -> " + db.Tweet.count({"lang": "en"}));
+
+print("es  -> " + db.Tweet.count({"lang": "es"}));
+
+print("fr  -> " + db.Tweet.count({"lang": "fr"}));
+
+print("it  -> " + db.Tweet.count({"lang": "it"}));
+
+print("de  -> " + db.Tweet.count({"lang": "de"}));
+
+print("all -> " + db.Tweet.count({"lang": {$nin: ["pt", "en", "es", "fr", "it", "de"]}}));
+
+print( "% pt -> " + (db.Tweet.count({"lang": "pt"}) / db.Tweet.count({"_id": {$ne: null}}) ) * 100);
+

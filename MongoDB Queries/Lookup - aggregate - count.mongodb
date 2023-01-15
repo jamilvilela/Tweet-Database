@@ -1,0 +1,14 @@
+db.Search.aggregate([
+    {$lookup: 
+        { from: "Tweet",
+          localField: "_id",
+          foreignField: "search_id",
+          as: "lkp_tweet"
+        }
+     }
+     ,{$unwind: "$lkp_tweet"}
+ //    ,{$match: {"user_query": "msft"}}
+     ,{$group: {_id:  "$user_language", qty: {$count: {}}}} //{id: "$_id", user: "$user_email", query:
+     ,{$project: { user: 1, query: 1, qty: 1}}
+     ,{$sort: {qty: -1}}
+]);

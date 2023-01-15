@@ -1,0 +1,22 @@
+db.Tweet.aggregate([
+    {$match: {"public_metrics.like_count": {$gt:100}} },
+    {$group: {_id: {lang: "$lang", author: "$author_id"}, quantity: {$count: {} }}},
+    {$sort: {quantity: -1}}
+]);
+
+db.Tweet.aggregate([
+    {$match: {"public_metrics.like_count": {$gt:0}} },
+    {$group: {_id: "$author_id", quantity: {$count: {} }}},
+    {$sort: {quantity: -1}},
+    {$limit: 10}    
+]);
+
+db.Tweet.aggregate([
+    {$match: {"public_metrics.like_count": {$gt:1}} },
+    {$group: {_id: {id: "$id", srch_id: "$search_id"}, quantity: {$count: {} }}},
+    {$sort: {quantity: -1}},
+    {$project: {_id:1, id: 1, srch_id:1, quantity:1}}     
+]);
+
+db.Tweet.find({"id": '1563354664489275392'})
+
